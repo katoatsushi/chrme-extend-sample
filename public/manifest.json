@@ -4,11 +4,27 @@
   "manifest_version": 3,
   "action": {
     "default_icon": {             
-      "16": "images/icon16.png",
-      "24": "images/icon24.png",
-      "32": "images/icon32.png"
+      "16": "logo192.png",
+      "24": "logo192.png",
+      "32": "logo192.png"
     },
     "default_title": "Click Me",
     "default_popup": "index.html"
-  }
+  },
+  "file_browser_handlers": [
+    {
+      "id": "upload",
+      "default_title": "Save to Gallery", 
+      "file_filters": [
+        "filesystem:*.jpg", 
+        "filesystem:*.jpeg",
+        "filesystem:*.png"
+      ]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "fileBrowserHandler",
+    "<all_urls>"
+] 
 }

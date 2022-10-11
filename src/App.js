@@ -6,12 +6,14 @@ import Dropzone from 'react-dropzone'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import logo from './logo.svg';
 import './App.css';
+import { Container } from '@mui/system';
+import GetChromePageInfo from './GetChomePageInfo.js'
 
 function App() {
   const [count, setCount] = useState(0);
-  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
+  const [company, setCompanies] = useState([]);
   const ref = useRef(null);
+  
   const onPostForm = useCallback(async(data) => {
     try {
       // Object の data を FormData 形式に変換する
@@ -43,10 +45,15 @@ function App() {
 
   function Clicked(){
     setCount((prev) => prev + 1)
-    // var message = "テストです"
-    // enqueueSnackbar(message, { 
-    //   variant: 'success',
-    // });
+  }
+  function hendleTestGet(){
+    axios.get('http://localhost:3000')
+    .then(function(res) {
+      setCompanies(res.data)
+      console.log("成功しました")
+    }).catch(function(res) {
+      console.log("失敗しました")
+    })
   }
 
   return (<>
@@ -58,9 +65,20 @@ function App() {
       <Button variant="outlined" onClick={() => Clicked()}>
         カウントする
       </Button>
-      <hr/>
-      
-      <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)} >
+
+      <Button variant="outlined" onClick={() => hendleTestGet()}>
+        APIをGET
+      </Button>
+      <Container>
+        { company.map((com, index) => <>
+          ID: { com.id } / 会社名: { com.name } <br/>
+        </>)}
+        <hr/>
+      </Container>
+
+      <GetChromePageInfo/>
+
+      {/* <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)} >
         {({getRootProps, getInputProps}) => (
           <Button variant="outlined">
             <FileDownloadIcon/>
@@ -72,27 +90,8 @@ function App() {
             </section>
           </Button>
         )}
-      </Dropzone>
-      {/* <form onSubmit={onSubmitHandler}>
-        <input type="file" ref={ref} />
-      </form> */}
+      </Dropzone> */}
     </div>
-    {/* <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div> */}
   </>);
 }
 
